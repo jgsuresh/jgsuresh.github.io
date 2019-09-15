@@ -30,3 +30,8 @@ markdown: kramdown
 
 # Layout settings
 home-link-in-menu: yes
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
