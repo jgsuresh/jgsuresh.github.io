@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Josh Suresh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --text: #e0dce6;
+      --text-secondary: #a99fba;
+      --text-muted: #665c77;
+      --bg: #211d30;
+      --border: #3a3348;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --serif: 'Source Serif 4', Georgia, serif;
+    }
+
+    html { font-size: 17px; }
+
+    body {
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    header {
+      padding: 5rem 0 2rem;
+    }
+    header h1 {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+    header p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+    }
+    header p:last-child { margin-bottom: 0; }
+
+    .links {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.15s, border-color 0.15s;
+      margin-right: 1.2rem;
+    }
+    .links a:hover { color: var(--text); border-color: var(--text-muted); }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5rem 0;
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-list {
+      list-style: none;
+    }
+    .post-list li {
+      margin-bottom: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+    }
+    .post-list a {
+      font-family: var(--serif);
+      font-size: 1.02rem;
+      color: #c9a8d4;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s;
+    }
+    .post-list a:hover { border-color: #c9a8d4; }
+    .post-date {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    footer {
+      padding: 4rem 0 3rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>Josh Suresh</h1>
+    <p>Researcher at Gates Foundation supporting malaria eradication through computational modeling of disease transmission. Former astrophysicist.</p>
+  </header>
+
+  <footer>
+    Josh Suresh &middot; Seattle, WA
+  </footer>
+
+</div>
+
+</body>
+</html>
