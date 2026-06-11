@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A malaria genetics case study on high-dimensional surveillance data, mechanistic simulators, and robust inference.">
+  <title>The struggle to extract meaning from high-dimensional data | Josh Suresh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --text: #e0dce6;
+      --text-secondary: #a99fba;
+      --text-muted: #665c77;
+      --bg: #211d30;
+      --border: #3a3348;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --serif: 'Source Serif 4', Georgia, serif;
+    }
+
+    html { font-size: 18px; }
+
+    body {
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    nav {
+      padding: 2rem 0 0;
+      font-size: 0.88rem;
+    }
+
+    nav a, article a {
+      color: #c9a8d4;
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    nav a:hover, article a:hover {
+      color: var(--text);
+      border-color: var(--text-muted);
+    }
+
+    article {
+      padding: 3rem 0 2rem;
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: 2.25rem;
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .post-date {
+      color: var(--text-muted);
+      font-size: 0.84rem;
+      margin-bottom: 2rem;
+    }
+
+    p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .footnote {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-top: 2rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    footer {
+      padding: 2rem 0 3rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 640px) {
+      html { font-size: 16px; }
+      article { padding-top: 2rem; }
+      h1 { font-size: 1.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <nav><a href="../index.html">Josh Suresh</a></nav>
+
+  <article>
+    <h1>The struggle to extract meaning from high-dimensional data: a malaria genetics case study</h1>
+    <p class="post-date">6/11/26</p>
+
+    <p>How do we get from noisy, complex observations to estimates of the latent state we actually care about, and from there to better decisions on how to intervene on the system?</p>
+
+    <p>Traditional epidemiological surveillance is essential but also a very low-dimensional view of a disease. Disease control decisions involving large amounts of public funds are routinely made based on simple counts of cases/infections over time. For a simple example of how this can go wrong, consider that this case-counting cannot distinguish a real rise in cases from a higher case-reporting rate.</p>
+
+    <p>Genotyping pathogens explodes the dimensionality of surveillance data because now every infection is represented by a potentially huge genotype vector. There is an obvious upside to getting much more information per sample. However, this data richness comes with a substantial interpretability cost. Only a tiny subset of the pathogen population will ever be sampled, and once we are looking at genetic data we also have to care about microdetails we may have previously glossed over, e.g. transmission heterogeneity, meiotic recombination, sampling bias, etc.</p>
+
+    <p>The simplest way to use genetic data is to actively throw away most of that data dimensionality and just track very specific genes linked to important phenotypes, e.g. genes that are known to confer drug resistance.</p>
+
+    <p>What are ways we can keep more of the data richness but still have robust inference for disease control decisions? There are lots of ideas here. One intermediate approach is to treat each genotype as a single long string and compute metrics related to how frequently these unique strings show up. For example, we expect a simple metric like "how many unique strains does a person have" to roughly correlate with the transmission intensity in a given place, since in higher transmission places people will naturally have more concurrent infections*. This approach is still throwing away most of the richness of the data though, since most of the gene-level information is not being used.</p>
+
+    <p>Another intermediate approach is to look for identical blocks of nucleotides that are shared between strains. This is a bit like looking for shared "substrings" in the genotype strings. Because recombination swaps discrete blocks of chromosomes, shared identical blocks between two strains implies relatedness and recent common ancestry - this approach is called "identity by descent". This metric is helpful for identifying recent importations - which could be a critical tool in the eradication endgame - but is noisy and not computed consistently across different groups.</p>
+
+    <p>This is the kind of situation a mechanistic forward-simulator can help. In designing the simulation, we try to mechanistically encode the features we know are present and we think are most important. Of course, the model is going to be "wrong" but it may still be a useful way to have a principled way to probe different kinds of observational processes and how well they can recover the latent model states. In this case, we care about how informative malaria genetic surveillance data is about the epidemiological processes that generate them.</p>
+
+    <p>So we decided to take our in-house malaria transmission model which already captured a lot of the machinery of how we think malaria "works", and upgrade it with an explicit tracking of unique genetic strains as well as the meiotic recombination process. It turned out that adding in these mechanics into the transmission model exposed a lot of previously glossed-over uncertainty surface. Instead of getting to say something like "adults under these transmission conditions will infect about X% of mosquitoes that bite them", we were now forced to consider much more detailed questions like "from the N strains this adult has, exactly how many gametocytes from each will be ingested by the mosquito, how many oocysts will form from that, and what does that imply for how related the offspring from these oocysts are, etc." Higher mechanistic fidelity inevitably exposes new, harder-to-measure parameters.</p>
+
+    <p>In short, though we were just adding in genetics as a rider on top of the transmission engine, we eventually concluded we needed to recalibrate the combined model, a significant undertaking for a heavy forward simulator. I used Claude Code to accelerate exploring, implementing, and iterating on a Bayesian history-matching approach. The core loop I eventually settled on was to filter Latin Hypercube sampled proposal parameter sets through a consensus filter between a sparse Gaussian Process and an XGBoost model to reject implausible regions, run the expensive forward simulator on surviving proposals, and fold the new simulations back into improving the filter. This emulation approach efficiently characterized the right region of parameter space to focus on.</p>
+
+    <p>The next step from there was to crank the calibrated simulation through a wide variety of transmission scenarios and analyze how informative the resulting synthetic genetic data was about the underlying ground-truth transmission conditions in the simulations. The detailed results are in <a href="https://www.medrxiv.org/content/10.64898/2026.06.05.26355027v1">the paper</a>, but the bottom line was that even under these idealized conditions, the parasite genetic metrics are overall fairly sensitive to features that real disease control programs can't or don't control for, e.g. the exact timing of the transmission season or the sampling process itself. In other words, the sensitivity of genetic data to a bunch of things that are unmeasured makes robust inference challenging enough that this data is not very interpretable in isolation. The real value of this data comes in triangulation alongside traditional epidemiological surveillance to identify real transmission changes that either data stream alone cannot robustly identify.</p>
+
+    <p>The transferable points: high-dimensional observations can be information-rich without being self-interpreting. When we have partial mechanistic knowledge, forward simulators let us generate synthetic worlds where the latent state is known, the observation process can be controlled, and inference methods can be stress-tested. If a signal struggles even in that idealized setup, it is a warning that it will be fragile in the real world.</p>
+
+    <p class="footnote">* Things are not so simple though because malaria is a sexually recombining parasite, which means that two genomes can be unique but still highly related, e.g. siblings that are not clones of each other.</p>
+  </article>
+
+  <footer>
+    Josh Suresh &middot; Seattle, WA
+  </footer>
+</div>
+
+</body>
+</html>

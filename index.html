@@ -81,14 +81,11 @@
     }
 
     .post-list {
-      list-style: none;
+      list-style: disc;
+      padding-left: 1.2rem;
     }
     .post-list li {
       margin-bottom: 0.9rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 1rem;
     }
     .post-list a {
       font-family: var(--serif);
@@ -103,7 +100,6 @@
       font-size: 0.82rem;
       color: var(--text-muted);
       white-space: nowrap;
-      flex-shrink: 0;
     }
 
     footer {
@@ -111,6 +107,7 @@
       font-size: 0.8rem;
       color: var(--text-muted);
     }
+
   </style>
 </head>
 <body>
@@ -121,6 +118,16 @@
     <h1>Josh Suresh</h1>
     <p>Researcher at Gates Foundation supporting malaria eradication through computational modeling of disease transmission. Former astrophysicist.</p>
   </header>
+
+  <section>
+    <h2>Writing</h2>
+    <ul class="post-list">
+      <li>
+        <time class="post-date" datetime="2026-06-11">6/11/26</time> -
+        <a href="posts/high-dimensional-data-malaria-genetics.html">The struggle to extract meaning from high-dimensional data: a malaria genetics case study</a>
+      </li>
+    </ul>
+  </section>
 
   <footer>
     Josh Suresh &middot; Seattle, WA
